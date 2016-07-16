@@ -92,7 +92,13 @@
         for (UIView * button in _buttons) {
             if ([button isKindOfClass:[UIButton class]]) {
                 UIButton * btn = (UIButton*)button;
-                [btn removeTarget:nil action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside]; //Remove all targets to avoid problems with reused buttons among many cells
+                
+                for (id target in btn.allTargets) {
+                    if ([target isKindOfClass:self.class]) {
+                       [btn removeTarget:target action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside]; //Remove all targets to avoid problems with reused buttons among many cells
+                    }
+                }
+                
                 [btn addTarget:self action:@selector(mgButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
             }
             if (!differentWidth) {
